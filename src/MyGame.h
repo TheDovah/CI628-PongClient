@@ -16,17 +16,18 @@ static struct GameData {
 
 class MyGame {
 
-    private:
-        SDL_Rect player1 = { 0, 0, 20, 60 };
+private:
+    SDL_Rect player1 = { 60, 0, 20, 60 };
+    SDL_Rect player2 = { 700, 0, 20, 60 };
 
-    public:
-        std::vector<std::string> messages;
+public:
+    std::vector<std::string> messages;
 
-        void on_receive(std::string message, std::vector<std::string>& args);
-        void send(std::string message);
-        void input(SDL_Event& event);
-        void update();
-        void render(SDL_Renderer* renderer);
+    void on_receive(std::string message, std::vector<std::string>& args);
+    void send(std::string message);
+    void input(SDL_Event& event);
+    void update();
+    void render(SDL_Renderer* renderer);
 };
 
 #endif

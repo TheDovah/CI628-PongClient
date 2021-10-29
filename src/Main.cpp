@@ -85,12 +85,12 @@ void loop(SDL_Renderer* renderer) {
                 game->input(event);
 
                 switch (event.key.keysym.sym) {
-                    case SDLK_ESCAPE:
-                        is_running = false;
-                        break;
+                case SDLK_ESCAPE:
+                    is_running = false;
+                    break;
 
-                    default:
-                        break;
+                default:
+                    break;
                 }
             }
 
