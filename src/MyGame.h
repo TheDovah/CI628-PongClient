@@ -10,6 +10,8 @@
 static struct GameData {
     int player1Y = 0;
     int player2Y = 0;
+    int player1X = 0;
+    int player2X = 0;
     int ballX = 0;
     int ballY = 0;
 } game_data;
@@ -19,6 +21,7 @@ class MyGame {
 private:
     SDL_Rect player1 = { 60, 0, 20, 60 };
     SDL_Rect player2 = { 700, 0, 20, 60 };
+    SDL_Rect ball = {0, 0, 10, 10 };
 
 public:
     std::vector<std::string> messages;
