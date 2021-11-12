@@ -52,6 +52,5 @@ void MyGame::render(SDL_Renderer* renderer) {
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     SDL_RenderDrawRect(renderer, &player1);
     SDL_RenderDrawRect(renderer, &player2);
-    SDL_RenderDrawRect(renderer, &ball);
-    SDL_Delay(7);
+    SDL_RenderCopy(renderer, texture, NULL, &ball);
 }

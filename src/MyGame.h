@@ -6,6 +6,7 @@
 #include <string>
 
 #include "SDL.h"
+#include "SDL_image.h"
 
 static struct GameData {
     int player1Y = 0;
@@ -15,6 +16,16 @@ static struct GameData {
     int ballX = 0;
     int ballY = 0;
 } game_data;
+
+class ball {
+
+
+    SDL_Texture* texture = NULL;
+    SDL_Surface* tmp = IMG_Load("Ygg_token.png");
+    texture = SDL_CreateTextureFromSurface(renderer, tmp);
+    SDL_FreeSurface(tmp);
+
+};
 
 class MyGame {
 
