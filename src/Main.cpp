@@ -108,7 +108,7 @@ void loop(SDL_Renderer* renderer) {
 
         SDL_RenderPresent(renderer);
 
-        SDL_Delay(17);
+        SDL_Delay(7);
     }
 }
 

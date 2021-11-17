@@ -1,5 +1,7 @@
 #include "MyGame.h"
 
+FX effects;
+
 void MyGame::on_receive(std::string cmd, std::vector<std::string>& args) {
     if (cmd == "GAME_DATA") {
         // we should have exactly 4 arguments
@@ -50,7 +52,9 @@ void MyGame::update() {
 
 void MyGame::render(SDL_Renderer* renderer) {
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-    SDL_RenderDrawRect(renderer, &player1);
+    //SDL_RenderDrawRect(renderer, &player1);
+    SDL_Texture* texP1 = SDL_CreateTextureFromSurface(renderer, effects.imgP1);
+    SDL_RenderCopy(renderer, texP1, NULL, &player1);
     SDL_RenderDrawRect(renderer, &player2);
     SDL_RenderCopy(renderer, texture, NULL, &ball);
 }

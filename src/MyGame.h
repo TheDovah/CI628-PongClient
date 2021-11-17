@@ -44,4 +44,10 @@ public:
     void render(SDL_Renderer* renderer);
 };
 
+class FX {
+
+public:
+    SDL_Surface* imgP1 = SDL_LoadBMP("Player1.bmp");
+};
+
 #endif
