@@ -1,6 +1,7 @@
 #include "MyGame.h"
 
-FX effects;
+FX _effects;
+MakeBall _ball;
 
 void MyGame::on_receive(std::string cmd, std::vector<std::string>& args) {
     if (cmd == "GAME_DATA") {
@@ -50,11 +51,16 @@ void MyGame::update() {
     ball.x = game_data.ballX;
 }
 
+void MakeBall::render(SDL_Renderer* renderer) {
+    _ball.texture = SDL_CreateTextureFromSurface(renderer, _ball.tmp);
+}
+
 void MyGame::render(SDL_Renderer* renderer) {
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-    //SDL_RenderDrawRect(renderer, &player1);
-    SDL_Texture* texP1 = SDL_CreateTextureFromSurface(renderer, effects.imgP1);
-    SDL_RenderCopy(renderer, texP1, NULL, &player1);
+    SDL_RenderDrawRect(renderer, &player1);
+    
+    //SDL_Texture* texP1 = SDL_CreateTextureFromSurface(renderer, _effects.imgP1);
+    //SDL_RenderCopy(renderer, texP1, NULL, &player1);
     SDL_RenderDrawRect(renderer, &player2);
-    SDL_RenderCopy(renderer, texture, NULL, &ball);
+    SDL_RenderCopy(renderer, _ball.texture, NULL, &ball);
 }

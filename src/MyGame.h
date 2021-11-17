@@ -17,14 +17,14 @@ static struct GameData {
     int ballY = 0;
 } game_data;
 
-class ball {
+class MakeBall {
+private:
 
-
-    SDL_Texture* texture = NULL;
+public:
+    SDL_Texture* texture = nullptr;
     SDL_Surface* tmp = IMG_Load("Ygg_token.png");
-    texture = SDL_CreateTextureFromSurface(renderer, tmp);
-    SDL_FreeSurface(tmp);
-
+    void render(SDL_Renderer* renderer);
+    //void SDL_FreeSurface(SDL_Surface* tmp);
 };
 
 class MyGame {
