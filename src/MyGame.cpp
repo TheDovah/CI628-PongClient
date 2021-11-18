@@ -51,16 +51,18 @@ void MyGame::update() {
     ball.x = game_data.ballX;
 }
 
-void MakeBall::render(SDL_Renderer* renderer) {
-    _ball.texture = SDL_CreateTextureFromSurface(renderer, _ball.tmp);
-}
-
 void MyGame::render(SDL_Renderer* renderer) {
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     SDL_RenderDrawRect(renderer, &player1);
+
+
+    _ball.texture = SDL_CreateTextureFromSurface(renderer, _ball.tmp);
+    void SDL_FreeSurface(SDL_Surface * tmp);
     
+    SDL_RenderCopy(renderer, _ball.texture, NULL, &ball);
+
+
     //SDL_Texture* texP1 = SDL_CreateTextureFromSurface(renderer, _effects.imgP1);
     //SDL_RenderCopy(renderer, texP1, NULL, &player1);
     SDL_RenderDrawRect(renderer, &player2);
-    SDL_RenderCopy(renderer, _ball.texture, NULL, &ball);
 }

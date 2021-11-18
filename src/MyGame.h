@@ -23,8 +23,7 @@ private:
 public:
     SDL_Texture* texture = nullptr;
     SDL_Surface* tmp = IMG_Load("Ygg_token.png");
-    void render(SDL_Renderer* renderer);
-    //void SDL_FreeSurface(SDL_Surface* tmp);
+
 };
 
 class MyGame {
