@@ -1,7 +1,6 @@
 #include "MyGame.h"
 
-FX _effects;
-MakeBall _ball;
+MakeBall ball;
 
 void MyGame::on_receive(std::string cmd, std::vector<std::string>& args) {
     if (cmd == "GAME_DATA") {
@@ -42,27 +41,25 @@ void MyGame::input(SDL_Event& event) {
 }
 
 void MyGame::update() {
-    player1.y = game_data.player1Y;
-    player1.x = game_data.player1X;
-    player2.y = game_data.player2Y;
-    player2.x = game_data.player2X;
+    player1_data.y = game_data.player1Y;
+    player1_data.x = game_data.player1X;
+    player2_data.y = game_data.player2Y;
+    player2_data.x = game_data.player2X;
 
-    ball.y = game_data.ballY;
-    ball.x = game_data.ballX;
+    ball_data.y = game_data.ballY;
+    ball_data.x = game_data.ballX;
 }
 
 void MyGame::render(SDL_Renderer* renderer) {
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-    SDL_RenderDrawRect(renderer, &player1);
 
+    if (ball.texture == nullptr)
+    {
+        ball.make_texture(renderer);
+    }
 
-    _ball.texture = SDL_CreateTextureFromSurface(renderer, _ball.tmp);
-    void SDL_FreeSurface(SDL_Surface * tmp);
-    
-    SDL_RenderCopy(renderer, _ball.texture, NULL, &ball);
+    SDL_RenderCopy(renderer, ball.texture, NULL, &ball_data);
 
-
-    //SDL_Texture* texP1 = SDL_CreateTextureFromSurface(renderer, _effects.imgP1);
-    //SDL_RenderCopy(renderer, texP1, NULL, &player1);
-    SDL_RenderDrawRect(renderer, &player2);
+    SDL_RenderDrawRect(renderer, &player1_data);
+    SDL_RenderDrawRect(renderer, &player2_data);
 }

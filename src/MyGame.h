@@ -22,16 +22,20 @@ private:
 
 public:
     SDL_Texture* texture = nullptr;
-    SDL_Surface* tmp = IMG_Load("Ygg_token.png");
+    SDL_Surface* tmp = IMG_Load("ball.png");
 
+    void make_texture(SDL_Renderer* renderer) {
+        texture = SDL_CreateTextureFromSurface(renderer, tmp);
+        SDL_FreeSurface(tmp);
+    }
 };
 
 class MyGame {
 
 private:
-    SDL_Rect player1 = { 60, 0, 20, 60 };
-    SDL_Rect player2 = { 700, 0, 20, 60 };
-    SDL_Rect ball = {0, 0, 10, 10 };
+    SDL_Rect player1_data = { 60, 0, 20, 60 };
+    SDL_Rect player2_data = { 700, 0, 20, 60 };
+    SDL_Rect ball_data = {0, 0, 10, 10 };
 
 public:
     std::vector<std::string> messages;
@@ -43,10 +47,5 @@ public:
     void render(SDL_Renderer* renderer);
 };
 
-class FX {
-
-public:
-    SDL_Surface* imgP1 = SDL_LoadBMP("Player1.bmp");
-};
 
 #endif

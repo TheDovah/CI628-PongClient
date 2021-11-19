@@ -10,6 +10,7 @@ const Uint16 PORT = 55555;
 bool is_running = true;
 
 MyGame* game = new MyGame();
+MakeBall* ball = new MakeBall();
 
 static int on_receive(void* socket_ptr) {
     TCPsocket socket = (TCPsocket)socket_ptr;
