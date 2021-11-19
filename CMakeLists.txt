@@ -64,12 +64,12 @@ file(GLOB_RECURSE SOURCE_FILES "src/*.h" "src/*.cpp")
 add_executable(${PROJECT_NAME} WIN32 ${SOURCE_FILES})
 
 # make assets directory in build
-#file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/assets)
+file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/assets)
 
 # copy game assets into build/assets directory
-#file(COPY
-#        "assets/assetName.png"
-#        DESTINATION ${CMAKE_BINARY_DIR}/assets)
+file(COPY
+        "assets"
+        DESTINATION ${CMAKE_BINARY_DIR})
 
 # SDL2MAIN_LIBRARY is needed for Windows specific main function.
 target_link_libraries(${PROJECT_NAME}

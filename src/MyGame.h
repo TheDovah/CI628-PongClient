@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <memory>
 
 #include "SDL.h"
 #include "SDL_image.h"
@@ -17,16 +18,16 @@ static struct GameData {
     int ballY = 0;
 } game_data;
 
-class MakeBall {
+class make_ball {
 private:
 
 public:
     SDL_Texture* texture = nullptr;
-    SDL_Surface* tmp = IMG_Load("ball.png");
+    SDL_Surface* ball_sf_tmp = IMG_Load("assets/ball.png");
 
     void make_texture(SDL_Renderer* renderer) {
-        texture = SDL_CreateTextureFromSurface(renderer, tmp);
-        SDL_FreeSurface(tmp);
+            texture = SDL_CreateTextureFromSurface(renderer, ball_sf_tmp);
+            SDL_FreeSurface(ball_sf_tmp);
     }
 };
 

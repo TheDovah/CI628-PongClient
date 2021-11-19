@@ -1,6 +1,6 @@
 #include "MyGame.h"
 
-MakeBall ball;
+make_ball ball;
 
 void MyGame::on_receive(std::string cmd, std::vector<std::string>& args) {
     if (cmd == "GAME_DATA") {
@@ -60,6 +60,6 @@ void MyGame::render(SDL_Renderer* renderer) {
 
     SDL_RenderCopy(renderer, ball.texture, NULL, &ball_data);
 
-    SDL_RenderDrawRect(renderer, &player1_data);
-    SDL_RenderDrawRect(renderer, &player2_data);
+    SDL_RenderFillRect(renderer, &player1_data);
+    SDL_RenderFillRect(renderer, &player2_data);
 }
