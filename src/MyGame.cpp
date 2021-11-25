@@ -4,7 +4,7 @@ make_ball ball;
 
 void MyGame::on_receive(std::string cmd, std::vector<std::string>& args) {
     if (cmd == "GAME_DATA") {
-        // we should have exactly 4 arguments
+        // we should have exactly 6 arguments
         if (args.size() == 6) {
             game_data.player1Y = stoi(args.at(0));
             game_data.player1X = stoi(args.at(1));
@@ -12,6 +12,14 @@ void MyGame::on_receive(std::string cmd, std::vector<std::string>& args) {
             game_data.player2X = stoi(args.at(3));
             game_data.ballX = stoi(args.at(4));
             game_data.ballY = stoi(args.at(5));
+        }
+        if (args.size() == 4)
+        // we should have exactly 4 arguments
+        {
+            game_data.player1Y = stoi(args.at(0));
+            game_data.player2Y = stoi(args.at(1));
+            game_data.ballX = stoi(args.at(2));
+            game_data.ballY = stoi(args.at(3));
         }
     }
     else {
