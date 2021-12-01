@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 #include <memory>
+#include <dos.h>
 
 #include "SDL.h"
 #include "SDL_image.h"
@@ -36,17 +37,24 @@ class Particle_engine {
 
 private:
     SDL_Rect small_rect;
+    int lifetime = 10;
+    int max_amount = 10;
 
 public:
     std::vector<SDL_Rect> o;
 
-    void make_particles(SDL_Renderer* renderer) {
-        for (int i = 0; i < 10; i++)
+    int get_maxamount() {
+        return max_amount;
+    }
+
+    void update_particles(SDL_Renderer* renderer) {
+
+        while (o.size() < max_amount)
         {
+            std::cout << "making particles" << std::endl;
             small_rect = { game_data.ballX, game_data.ballY, 10, 10 };
             o.push_back(small_rect);
         }
-        std::cout << "making particles" << std::endl;
     }
 };
 

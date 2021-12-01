@@ -3,21 +3,28 @@
 Ball_texture_data ball;
 Particle_engine particles;
 
+int* i = new int(1);
 void MyGame::on_receive(std::string cmd, std::vector<std::string>& args) {
     if (cmd == "GAME_DATA") {
         // we should have exactly 6 arguments
         if (args.size() == 6) 
         {
+            std::cout << "6 Arguments" << std::endl;
             game_data.player1Y = stoi(args.at(0));
             game_data.player1X = stoi(args.at(1));
             game_data.player2Y = stoi(args.at(2));
             game_data.player2X = stoi(args.at(3));
             game_data.ballX = stoi(args.at(4));
             game_data.ballY = stoi(args.at(5));
+
         }
         if (args.size() == 4)
         // we should have exactly 4 arguments
         {
+            if (*i == 1) { 
+                std::cout << "4 Arguments" << std::endl;
+                delete i;
+            }
             game_data.player1Y = stoi(args.at(0));
             game_data.player2Y = stoi(args.at(1));
             game_data.ballX = stoi(args.at(2));
@@ -70,10 +77,9 @@ void MyGame::render(SDL_Renderer* renderer) {
     }
     if (particles.o.size() == 0)
     {
-        particles.make_particles(renderer);
-        std::cout << player1_data.x << ", " << player2_data.x << std::endl;
+        particles.update_particles(renderer);
     }
-    for (int i = 0; i < particles.o.size(); i++)
+    for (int i = 0; i < particles.get_maxamount(); i++)
     {
         SDL_RenderFillRect(renderer, &particles.o.at(i));
     }
