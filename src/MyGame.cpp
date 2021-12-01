@@ -1,11 +1,13 @@
 #include "MyGame.h"
 
-make_ball ball;
+Ball_texture_data ball;
+Particle_engine particles;
 
 void MyGame::on_receive(std::string cmd, std::vector<std::string>& args) {
     if (cmd == "GAME_DATA") {
         // we should have exactly 6 arguments
-        if (args.size() == 6) {
+        if (args.size() == 6) 
+        {
             game_data.player1Y = stoi(args.at(0));
             game_data.player1X = stoi(args.at(1));
             game_data.player2Y = stoi(args.at(2));
@@ -58,12 +60,22 @@ void MyGame::update() {
     ball_data.x = game_data.ballX;
 }
 
+
 void MyGame::render(SDL_Renderer* renderer) {
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 
     if (ball.texture == nullptr)
     {
         ball.make_texture(renderer);
+    }
+    if (particles.o.size() == 0)
+    {
+        particles.make_particles(renderer);
+        std::cout << player1_data.x << ", " << player2_data.x << std::endl;
+    }
+    for (int i = 0; i < particles.o.size(); i++)
+    {
+        SDL_RenderFillRect(renderer, &particles.o.at(i));
     }
 
     SDL_RenderCopy(renderer, ball.texture, NULL, &ball_data);
