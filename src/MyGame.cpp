@@ -75,13 +75,12 @@ void MyGame::render(SDL_Renderer* renderer) {
     {
         ball.make_texture(renderer);
     }
-    if (particles.o.size() == 0)
+    
+    particles.update_particles(renderer);
+    
+    for (int i = 0; i < particles.get_size(); i++)
     {
-        particles.update_particles(renderer);
-    }
-    for (int i = 0; i < particles.get_maxamount(); i++)
-    {
-        SDL_RenderFillRect(renderer, &particles.o.at(i));
+        SDL_RenderFillRect(renderer, &particles.get_at(i));
     }
 
     SDL_RenderCopy(renderer, ball.texture, NULL, &ball_data);

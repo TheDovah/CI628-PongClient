@@ -37,24 +37,62 @@ class Particle_engine {
 
 private:
     SDL_Rect small_rect;
-    int lifetime = 10;
-    int max_amount = 10;
+    float max_lifetime = 0.2;
+    int lifetime;
+    int max_amount = 100;
+
+    float oldX;
+    float newX;
+
+    std::vector<SDL_Rect> o;
 
 public:
-    std::vector<SDL_Rect> o;
 
     int get_maxamount() {
         return max_amount;
     }
 
+    int get_size() {
+        return o.size();
+    }
+
+    SDL_Rect get_at(int i) {
+        return o.at(i);
+    }
+
     void update_particles(SDL_Renderer* renderer) {
+
+        oldX = game_data.ballX;
 
         while (o.size() < max_amount)
         {
-            std::cout << "making particles" << std::endl;
-            small_rect = { game_data.ballX, game_data.ballY, 10, 10 };
+            small_rect = { game_data.ballX, game_data.ballY, 5, 5 };
             o.push_back(small_rect);
         }
+
+        if (lifetime == 0)
+        {
+            o.erase(o.begin());
+            lifetime = max_lifetime;
+        }
+
+        srand(time(0));
+        int number = (int)rand() % 30;
+
+        for (int i = 0; i < o.size(); i++)
+        {
+            if (oldX < newX)
+            {
+                o.at(i).x += number;
+            }
+            else
+            {
+                o.at(i).x -= number;
+            }
+            o.at(i).y += number%10;
+        }
+        newX = game_data.ballX;
+        lifetime -= 0.2f;
     }
 };
 
