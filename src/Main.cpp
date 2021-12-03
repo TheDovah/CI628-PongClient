@@ -103,7 +103,7 @@ void loop(SDL_Renderer* renderer) {
 
             if (event.type == SDL_QUIT) {
                 game->messages.push_back("exit");
-                game->messages.push_back("dumbyMessage");
+                //game->messages.push_back("dumbyMessage");
                 SDL_Delay(5);
             }
         }
