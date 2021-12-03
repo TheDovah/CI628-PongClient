@@ -61,6 +61,10 @@ static int on_send(void* socket_ptr) {
 
             for (auto m : game->messages) {
                 message += "," + m;
+                if ( m == "exit")
+                {
+                    is_running = false;
+                }
             }
 
             game->messages.clear();
@@ -68,6 +72,8 @@ static int on_send(void* socket_ptr) {
             cout << "Sending_TCP: " << message << endl;
 
             SDLNet_TCP_Send(socket, message.c_str(), message.length());
+
+        
         }
 
         SDL_Delay(1);
@@ -96,7 +102,9 @@ void loop(SDL_Renderer* renderer) {
             }
 
             if (event.type == SDL_QUIT) {
-                is_running = false;
+                game->messages.push_back("exit");
+                game->messages.push_back("dumbyMessage");
+                SDL_Delay(5);
             }
         }
 

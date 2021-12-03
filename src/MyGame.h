@@ -70,7 +70,7 @@ public:
             o.push_back(small_rect);
         }
 
-        if (lifetime == 0)
+        if (lifetime <= 0)
         {
             o.erase(o.begin());
             lifetime = max_lifetime;
