@@ -43,12 +43,15 @@ static int on_receive(void* socket_ptr) {
             }
         }
 
-        game->on_receive(cmd, args);
-
         if (cmd == "exit") {
+            SDL_Delay(1);
             is_running = false;
             break;
         }
+        else {
+            game->on_receive(cmd, args);
+        }
+
 
     } while (received > 0 && is_running);
 
@@ -64,9 +67,9 @@ static int on_send(void* socket_ptr) {
 
             for (auto m : game->messages) {
                 message += "," + m;
-                if ( m == "exit")
+                if (message == "exit")
                 {
-                    is_running = false;
+                    return 0;
                 }
             }
 
