@@ -9,6 +9,7 @@
 
 #include "SDL.h"
 #include "SDL_image.h"
+#include "SDL_mixer.h"
 
 static struct GameData {
     int player1Y = 0;
@@ -104,6 +105,8 @@ private:
     SDL_Rect player2_data = { 70, 0, 20, 60 };
     SDL_Rect ball_data = {0, 0, 10, 10 };
 
+    Mix_Chunk* sound;
+
 public:
     std::vector<std::string> messages;
 
@@ -112,6 +115,10 @@ public:
     void input(SDL_Event& event);
     void update();
     void render(SDL_Renderer* renderer);
+
+    void init_audio();
+    void play_sound();
+    void destroy();
 };
 
 

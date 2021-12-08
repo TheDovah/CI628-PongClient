@@ -1,7 +1,41 @@
 #include "MyGame.h"
 
+#include "SDL_mixer.h"
+
 Ball_texture_data ball;
 Particle_engine particles;
+
+/*
+
+    Returns true iff s1 contains s2
+
+*/
+bool contains(std::string s1, std::string s2) {
+
+    return s1.find(s2) != std::string::npos;
+
+}
+
+void MyGame::init_audio() {
+    // open 44.1KHz, 
+    // signed 16bit
+    // system byte order, 
+    // stereo audio,
+    // using 1024 byte chunks
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024) == -1) {
+        printf("Mix_OpenAudio: %s\n", Mix_GetError());
+        return;
+    }
+
+    // all good to go
+    sound = Mix_LoadWAV("assets/drop.wav");
+    if (sound == nullptr) {
+        printf("Mix_LoadWAV: %s\n", Mix_GetError());
+    }
+    else {
+        std::cout << "Sound effect loaded" << std::endl;
+    }
+}
 
 int* i = new int(1);
 void MyGame::on_receive(std::string cmd, std::vector<std::string>& args) {
@@ -34,7 +68,17 @@ void MyGame::on_receive(std::string cmd, std::vector<std::string>& args) {
     else {
         std::cout << "Received: " << cmd << std::endl;
     }
+
+    if (contains(cmd, "HIT"))
+    {
+        play_sound();
+    }
+    if (contains(cmd, "exit"))
+    {
+        
+    }
 }
+
 
 void MyGame::send(std::string message) {
     messages.push_back(message);
@@ -54,6 +98,12 @@ void MyGame::input(SDL_Event& event) {
     case SDLK_k:
         send(event.type == SDL_KEYDOWN ? "K_DOWN" : "K_UP");
         break;
+    }
+}
+
+void MyGame::play_sound() {
+    if (Mix_PlayChannel(-1, sound, 0) == -1) {
+        printf("Error playing sound. Mix_PlayChannel: %s\n", Mix_GetError());
     }
 }
 
@@ -78,13 +128,22 @@ void MyGame::render(SDL_Renderer* renderer) {
     
     particles.update_particles(renderer);
     
+    /*
     for (int i = 0; i < particles.get_size(); i++)
     {
         SDL_RenderFillRect(renderer, &particles.get_at(i));
     }
+    */
 
     SDL_RenderCopy(renderer, ball.texture, NULL, &ball_data);
 
     SDL_RenderFillRect(renderer, &player1_data);
     SDL_RenderFillRect(renderer, &player2_data);
+}
+
+void MyGame::destroy() {
+    sound = nullptr;
+    Mix_FreeChunk(sound);
+
+    Mix_CloseAudio();
 }

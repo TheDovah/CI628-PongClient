@@ -1,4 +1,5 @@
 #include "SDL_net.h"
+#include "SDL_mixer.h"
 
 #include "MyGame.h"
 
@@ -8,6 +9,7 @@ const char* IP_NAME = "localhost";
 const Uint16 PORT = 55555;
 
 bool is_running = true;
+
 
 MyGame* game = new MyGame();
 Ball_texture_data* ball = new Ball_texture_data();
@@ -44,6 +46,7 @@ static int on_receive(void* socket_ptr) {
         game->on_receive(cmd, args);
 
         if (cmd == "exit") {
+            is_running = false;
             break;
         }
 
@@ -103,8 +106,6 @@ void loop(SDL_Renderer* renderer) {
 
             if (event.type == SDL_QUIT) {
                 game->messages.push_back("exit");
-                //game->messages.push_back("dumbyMessage");
-                SDL_Delay(5);
             }
         }
 
@@ -141,6 +142,8 @@ int run_game() {
         return -1;
     }
 
+
+    game->init_audio();
     loop(renderer);
 
     return 0;
@@ -153,7 +156,7 @@ int main(int argc, char** argv) {
         printf("SDL_Init: %s\n", SDL_GetError());
         exit(1);
     }
-
+    
     // Initialize SDL_net
     if (SDLNet_Init() == -1) {
         printf("SDLNet_Init: %s\n", SDLNet_GetError());
@@ -188,6 +191,8 @@ int main(int argc, char** argv) {
 
     // Shutdown SDL_net
     SDLNet_Quit();
+
+    game->destroy();
 
     // Shutdown SDL
     SDL_Quit();
