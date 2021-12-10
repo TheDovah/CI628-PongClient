@@ -18,6 +18,8 @@ static struct GameData {
     int player2X = 0;
     int ballX = 0;
     int ballY = 0;
+    int score1 = 0;
+    int score2 = 0;
 } game_data;
 
 class Ball_texture_data {

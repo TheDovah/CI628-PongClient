@@ -65,17 +65,22 @@ void MyGame::on_receive(std::string cmd, std::vector<std::string>& args) {
             game_data.ballY = stoi(args.at(3));
         }
     }
+    else if (contains(cmd, "SCORES"))
+    {
+        game_data.score1 = stoi(args.at(0));
+        game_data.score2 = stoi(args.at(1));
+
+        std::cout << "Score 1: " << game_data.score1 << std::endl;
+    }
     else {
         std::cout << "Received: " << cmd << std::endl;
     }
 
+    
+
     if (contains(cmd, "HIT"))
     {
         play_sound();
-    }
-    if (contains(cmd, "exit"))
-    {
-        
     }
 }
 

@@ -29,6 +29,16 @@ static int on_receive(void* socket_ptr) {
 
         char* pch = strtok(message, ",");
 
+
+        /*
+        *   Null checking as it will be null after disconnecting
+        */
+        if (pch == NULL)
+        {
+            is_running = false;
+            return 0;
+        }
+
         // get the command, which is the first string in the message
         string cmd(pch);
 
@@ -44,7 +54,6 @@ static int on_receive(void* socket_ptr) {
         }
 
         if (cmd == "exit") {
-            SDL_Delay(1);
             is_running = false;
             break;
         }
