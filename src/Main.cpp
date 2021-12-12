@@ -27,8 +27,8 @@ static int on_receive(void* socket_ptr) {
         received = SDLNet_TCP_Recv(socket, message, message_length);
         message[received] = '\0';
 
-        char* pch = strtok(message, ",");
 
+        char* pch = strtok(message, ",");
 
         /*
         *   Null checking as it will be null after disconnecting
@@ -45,6 +45,7 @@ static int on_receive(void* socket_ptr) {
         // then get the arguments to the command
         vector<string> args;
 
+
         while (pch != NULL) {
             pch = strtok(NULL, ",");
 
@@ -52,6 +53,7 @@ static int on_receive(void* socket_ptr) {
                 args.push_back(string(pch));
             }
         }
+
 
         if (cmd == "exit") {
             is_running = false;

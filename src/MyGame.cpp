@@ -4,6 +4,7 @@
 
 Ball_texture_data ball;
 Particle_engine particles;
+Score update_score;
 
 /*
 
@@ -65,23 +66,20 @@ void MyGame::on_receive(std::string cmd, std::vector<std::string>& args) {
             game_data.ballY = stoi(args.at(3));
         }
     }
-    else if (contains(cmd, "SCORES"))
+    else if (contains(cmd, "HIT"))
+    {
+        play_sound();
+    }
+    else if (cmd == "SCORES")
     {
         game_data.score1 = stoi(args.at(0));
         game_data.score2 = stoi(args.at(1));
-
-        std::cout << "Score 1: " << game_data.score1 << std::endl;
     }
     else {
         std::cout << "Received: " << cmd << std::endl;
     }
 
-    
 
-    if (contains(cmd, "HIT"))
-    {
-        play_sound();
-    }
 }
 
 
@@ -132,6 +130,8 @@ void MyGame::render(SDL_Renderer* renderer) {
     }
     
     particles.update_particles(renderer);
+
+    update_score.renderScore(renderer);
     
     /*
     for (int i = 0; i < particles.get_size(); i++)
@@ -139,6 +139,11 @@ void MyGame::render(SDL_Renderer* renderer) {
         SDL_RenderFillRect(renderer, &particles.get_at(i));
     }
     */
+
+    int x = 0;
+    int y = 0;
+    SDL_Rect dst = { x, y, update_score.t_width, update_score.t_height };
+    SDL_RenderCopy(renderer, update_score.ftexture, NULL, &dst);
 
     SDL_RenderCopy(renderer, ball.texture, NULL, &ball_data);
 
