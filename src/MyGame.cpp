@@ -131,6 +131,11 @@ void MyGame::render(SDL_Renderer* renderer) {
     
     particles.update_particles(renderer);
 
+    if (update_score.ftexture == NULL || oldScore != newScore)
+    {
+        std::cout << "*cough* *cough*" << std::endl;
+        update_score.load_score_texture();
+    }
     update_score.renderScore(renderer);
     
     /*
@@ -140,10 +145,7 @@ void MyGame::render(SDL_Renderer* renderer) {
     }
     */
 
-    int x = 0;
-    int y = 0;
-    SDL_Rect dst = { x, y, update_score.t_width, update_score.t_height };
-    SDL_RenderCopy(renderer, update_score.ftexture, NULL, &dst);
+    SDL_RenderCopy(renderer, update_score.ftexture, NULL, &update_score.dst);
 
     SDL_RenderCopy(renderer, ball.texture, NULL, &ball_data);
 

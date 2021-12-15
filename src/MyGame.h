@@ -40,6 +40,7 @@ public:
     }
 };
 
+// https://github.com/AlmasB/FXGL-fastrender
 
 class Particle_engine {
 
@@ -107,47 +108,62 @@ public:
 class Score {
 private:
     int fontsize = 24;
-    SDL_Color text_color = { 0,0,0 };
+    SDL_Color text_color = { 255,255,255 };
     std::string fontpath = "assets/Oswald-Bold.ttf";
     int text = game_data.score1;
-    TTF_Font* font = TTF_OpenFont(fontpath.c_str(), fontsize);
 
 public:
 
-    SDL_Texture* ftexture = NULL; // our font-texture
-    int t_width = 0; // width of the loaded font-texture
-    int t_height = 0; // height of the loaded font-texture
+    SDL_Surface* text_surface;
+    SDL_Texture* ftexture; // our font-texture
+    int t_width = 100; // width of the loaded font-texture
+    int t_height = 100; // height of the loaded font-texture
 
-    void renderScore(SDL_Renderer* renderer) {
+    int x = 100;
+    int y = 200;
+    SDL_Rect dst = { x, y, t_width, t_height };
+
+    void load_score_texture(){
+        TTF_Init();
+        TTF_Font* font = TTF_OpenFont(fontpath.c_str(), fontsize);
         // check to see that the font was loaded correctly
         if (font == NULL) {
-            std::cout << "Failed the load the font!\n";
+            std::cout << "Failed to load the font!\n";
             std::cout << "SDL_TTF Error: " << TTF_GetError() << "\n";
         }
         else {
             // now create a surface from the font
-            SDL_Surface* text_surface = TTF_RenderText_Solid(font, std::to_string(text).c_str(), text_color);
+            text_surface = TTF_RenderText_Solid(font, std::to_string(text).c_str(), text_color);
+            t_width = text_surface->w; // assign the width of the texture
+            t_height = text_surface->h; // assign the height of the texture
 
             // render the text surface
             if (text_surface == NULL) {
                 std::cout << "Failed to render text surface!\n";
                 std::cout << "SDL_TTF Error: " << TTF_GetError() << "\n";
             }
-            else {
-                // create a texture from the surface
+        }
+        std::cout << "score1 = " << text << std::endl;
+    }
+
+    void renderScore(SDL_Renderer* renderer) {
+        
+        // render the text surface
+        if (text_surface == NULL) {
+            std::cout << "surface is null!\n";
+            std::cout << "SDL_TTF Error: " << TTF_GetError() << "\n";
+        }
+        else
+        {
+            if (ftexture == NULL) {
+                std::cout << "It's not COVID\n";
                 ftexture = SDL_CreateTextureFromSurface(renderer, text_surface);
-
-                if (ftexture == NULL) {
-                    std::cout  << "Unable to create texture from rendered text!\n";
-                }
-                else {
-                    t_width = text_surface->w; // assign the width of the texture
-                    t_height = text_surface->h; // assign the height of the texture
-
-                    // clean up after ourselves (destroy the surface)
-                    SDL_FreeSurface(text_surface);
-                }
+                SDL_FreeSurface(text_surface);
             }
+            // create a texture from the surface
+           /* else {
+                // clean up after ourselves (destroy the surface)
+            }*/
         }
     }
 };
