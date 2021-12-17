@@ -119,7 +119,7 @@ public:
 class Score {
 private:
     int fontsize = 24;
-    SDL_Color text_color = { 255,255,255 };
+    SDL_Color text_color = { 255,0,0 };
     std::string fontpath = "assets/Oswald-Bold.ttf";
     int text = game_data.score1;
 
@@ -173,11 +173,7 @@ public:
                 std::cout << "x: " << dst.x << std::endl;
                 SDL_FreeSurface(text_surface);
             }
-            else
-            {
-                std::cout << &ftexture << std::endl;
-            }
-
+            
             SDL_RenderCopy(renderer, ftexture, NULL, &dst.GetRect());
 
             // create a texture from the surface
