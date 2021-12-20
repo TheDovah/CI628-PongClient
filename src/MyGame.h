@@ -25,6 +25,8 @@ static struct GameData {
     int ballY = 0;
     int score1 = 0;
     int score2 = 0;
+    int oldScore = 0;
+    int newScore = 0;
 } game_data;
 
 class Ball_texture_data {
@@ -105,10 +107,19 @@ public:
     }
 };
 
+class dst {
+public:
+    int x, y;
+    int t_width = 200;
+    int t_height = 200;
+
+    const SDL_Rect& GetRect() const { SDL_Rect cube = { x, y, t_width, t_height }; return cube; }
+};
+
 class Score {
 private:
     int fontsize = 24;
-    SDL_Color text_color = { 255,255,255 };
+    SDL_Color text_color = { 255,0,0 };
     std::string fontpath = "assets/Oswald-Bold.ttf";
     int text = game_data.score1;
 
@@ -116,13 +127,9 @@ public:
 
     SDL_Surface* text_surface;
     SDL_Texture* ftexture; // our font-texture
-    int t_width = 100; // width of the loaded font-texture
-    int t_height = 100; // height of the loaded font-texture
-
-    int x = 100;
-    int y = 200;
-    SDL_Rect dst = { x, y, t_width, t_height };
-
+    int t_width = 200; // width of the loaded font-texture
+    int t_height = 200; // height of the loaded font-texture
+        
     void load_score_texture(){
         TTF_Init();
         TTF_Font* font = TTF_OpenFont(fontpath.c_str(), fontsize);
@@ -146,8 +153,10 @@ public:
         std::cout << "score1 = " << text << std::endl;
     }
 
-    void renderScore(SDL_Renderer* renderer) {
-        
+    void renderScore(SDL_Renderer* renderer, int x, int y) {
+        dst dst;
+
+
         // render the text surface
         if (text_surface == NULL) {
             std::cout << "surface is null!\n";
@@ -155,11 +164,18 @@ public:
         }
         else
         {
+
             if (ftexture == NULL) {
                 std::cout << "It's not COVID\n";
                 ftexture = SDL_CreateTextureFromSurface(renderer, text_surface);
+                dst.x = x;
+                dst.y = y;
+                std::cout << "x: " << dst.x << std::endl;
                 SDL_FreeSurface(text_surface);
             }
+            
+            SDL_RenderCopy(renderer, ftexture, NULL, &dst.GetRect());
+
             // create a texture from the surface
            /* else {
                 // clean up after ourselves (destroy the surface)
