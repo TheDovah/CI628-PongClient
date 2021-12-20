@@ -156,7 +156,7 @@ int run_game() {
         return -1;
     }
 
-
+    game->init_text();
     game->init_audio();
     loop(renderer);
 

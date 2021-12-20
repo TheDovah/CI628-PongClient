@@ -7,6 +7,8 @@ Particle_engine particles;
 Score update_score1;
 Score update_score2;
 
+std::vector<Score> Scores;
+
 /*
 
     Returns true iff s1 contains s2
@@ -16,6 +18,17 @@ bool contains(std::string s1, std::string s2) {
 
     return s1.find(s2) != std::string::npos;
 
+}
+
+void MyGame::init_text() {
+    Scores.push_back(update_score1);
+    Scores.push_back(update_score2);
+
+    update_score1.x = 100;
+    update_score1.y = 0;
+
+    update_score2.x = 500;
+    update_score2.y = 0;
 }
 
 void MyGame::init_audio() {
@@ -134,18 +147,19 @@ void MyGame::render(SDL_Renderer* renderer) {
 
     if (update_score1.ftexture == NULL && update_score2.ftexture == NULL || game_data.newScore1 != game_data.oldScore1 || game_data.newScore2 != game_data.oldScore2)
     {
-        update_score1.updateText(renderer, std::to_string(game_data.newScore1), 100, 0);
-        update_score2.updateText(renderer, std::to_string(game_data.newScore2), 500, 0);
+        update_score1.updateText(renderer, std::to_string(game_data.newScore1));
+        update_score2.updateText(renderer, std::to_string(game_data.newScore2));
     }
     else
     {
-        update_score1.renderText(renderer, 100, 0);
-        update_score2.renderText(renderer, 500, 0);
+        /*for (int i = 0; i < Scores.size(); i++)
+        {
+            std::cout << "hello" << std::endl;
+            Scores[i].renderText(renderer);
+        }*/
+        update_score1.renderText(renderer);
+        update_score2.renderText(renderer);
     }
-
-
-
-    //update_score.renderText(renderer, "Fuck Off", 0, 0);
     
     /*
     for (int i = 0; i < particles.get_size(); i++)

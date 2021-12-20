@@ -119,7 +119,8 @@ private:
     SDL_Surface* text_surface;
 
 public:
-
+    int x;
+    int y;
     SDL_Texture* ftexture = NULL; // our font-texture
     
     SDL_Rect makeRect(int x, int y) {
@@ -131,7 +132,8 @@ public:
         return dst;
     }
 
-    void updateText(SDL_Renderer* renderer, std::string input, int x, int y) {
+
+    void updateText(SDL_Renderer* renderer, std::string input) {
         TTF_Init();
 
         font = TTF_OpenFont(fontpath.c_str(), fontsize);
@@ -146,11 +148,11 @@ public:
             // now create a surface from the font
             std::cout << "Updating score.." << std::endl;
             text_surface = TTF_RenderText_Solid(font, text, text_color);
-            renderText(renderer, x, y);
+            renderText(renderer);
         }
     }
 
-    void renderText(SDL_Renderer* renderer, int x, int y) {
+    void renderText(SDL_Renderer* renderer) {
         // render the text surface
         if (text_surface == NULL) {
             std::cout << "Failed to render text surface!\n";
@@ -190,7 +192,7 @@ public:
     void input(SDL_Event& event);
     void update();
     void render(SDL_Renderer* renderer);
-
+    void init_text();
     void init_audio();
     void play_sound();
     void destroy();
