@@ -23,10 +23,12 @@ static struct GameData {
     int player2X = 0;
     int ballX = 0;
     int ballY = 0;
-    int score1 = 0;
-    int score2 = 0;
-    int oldScore = 0;
-    int newScore = 0;
+
+    int oldScore1 = 0;
+    int newScore1 = 0;
+
+    int oldScore2 = 0;
+    int newScore2 = 0;
 } game_data;
 
 class Ball_texture_data {
@@ -106,30 +108,35 @@ public:
     }
 };
 
-class dst {
-public:
-    int x, y;
-    int t_width = 200;
-    int t_height = 200;
-
-    const SDL_Rect& GetRect() const { SDL_Rect cube = { x, y, t_width, t_height }; return cube; }
-};
 
 class Score {
 private:
     int fontsize = 24;
-    SDL_Color text_color = { 255,0,0 };
+    const char* text;
+    SDL_Color text_color = { 255,255,255 };
     std::string fontpath = "assets/Oswald-Bold.ttf";
-    int text = game_data.score1;
-    TTF_Font* font = TTF_OpenFont(fontpath.c_str(), fontsize);
+    TTF_Font* font;
+    SDL_Surface* text_surface;
 
 public:
 
     SDL_Texture* ftexture = NULL; // our font-texture
-    int t_width = 0; // width of the loaded font-texture
-    int t_height = 0; // height of the loaded font-texture
+    
+    SDL_Rect makeRect(int x, int y) {
+        int t_width = 200;
+        int t_height = 200;
 
-    void renderScore(SDL_Renderer* renderer) {
+        SDL_Rect dst = { x, y, t_width, t_height };
+
+        return dst;
+    }
+
+    void updateText(SDL_Renderer* renderer, std::string input, int x, int y) {
+        TTF_Init();
+
+        font = TTF_OpenFont(fontpath.c_str(), fontsize);
+        text = input.c_str();
+
         // check to see that the font was loaded correctly
         if (font == NULL) {
             std::cout << "Failed the load the font!\n";
@@ -137,27 +144,30 @@ public:
         }
         else {
             // now create a surface from the font
-            SDL_Surface* text_surface = TTF_RenderText_Solid(font, std::to_string(text).c_str(), text_color);
+            std::cout << "Updating score.." << std::endl;
+            text_surface = TTF_RenderText_Solid(font, text, text_color);
+            renderText(renderer, x, y);
+        }
+    }
 
-            // render the text surface
-            if (text_surface == NULL) {
-                std::cout << "Failed to render text surface!\n";
-                std::cout << "SDL_TTF Error: " << TTF_GetError() << "\n";
+    void renderText(SDL_Renderer* renderer, int x, int y) {
+        // render the text surface
+        if (text_surface == NULL) {
+            std::cout << "Failed to render text surface!\n";
+            std::cout << "SDL_TTF Error: " << TTF_GetError() << "\n";
+        }
+        else {
+            // create a texture from the surface
+            ftexture = SDL_CreateTextureFromSurface(renderer, text_surface);
+
+            if (ftexture == NULL) {
+                std::cout  << "Unable to create texture from rendered text!\n";
             }
             else {
-                // create a texture from the surface
-                ftexture = SDL_CreateTextureFromSurface(renderer, text_surface);
 
-                if (ftexture == NULL) {
-                    std::cout  << "Unable to create texture from rendered text!\n";
-                }
-                else {
-                    t_width = text_surface->w; // assign the width of the texture
-                    t_height = text_surface->h; // assign the height of the texture
-
-                    // clean up after ourselves (destroy the surface)
-                    SDL_FreeSurface(text_surface);
-                }
+                SDL_RenderCopy(renderer, ftexture, NULL, &makeRect(x, y));
+                
+                //SDL_FreeSurface(text_surface);
             }
         }
     }

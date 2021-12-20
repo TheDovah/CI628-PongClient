@@ -4,7 +4,8 @@
 
 Ball_texture_data ball;
 Particle_engine particles;
-Score update_score;
+Score update_score1;
+Score update_score2;
 
 /*
 
@@ -72,8 +73,8 @@ void MyGame::on_receive(std::string cmd, std::vector<std::string>& args) {
     }
     else if (cmd == "SCORES")
     {
-        game_data.score1 = stoi(args.at(0));
-        game_data.score2 = stoi(args.at(1));
+        game_data.newScore1 = stoi(args.at(0));
+        game_data.newScore2 = stoi(args.at(1));
     }
     else {
         std::cout << "Received: " << cmd << std::endl;
@@ -131,7 +132,20 @@ void MyGame::render(SDL_Renderer* renderer) {
     
     particles.update_particles(renderer);
 
-    update_score.renderScore(renderer);
+    if (update_score1.ftexture == NULL && update_score2.ftexture == NULL || game_data.newScore1 != game_data.oldScore1 || game_data.newScore2 != game_data.oldScore2)
+    {
+        update_score1.updateText(renderer, std::to_string(game_data.newScore1), 100, 0);
+        update_score2.updateText(renderer, std::to_string(game_data.newScore2), 500, 0);
+    }
+    else
+    {
+        update_score1.renderText(renderer, 100, 0);
+        update_score2.renderText(renderer, 500, 0);
+    }
+
+
+
+    //update_score.renderText(renderer, "Fuck Off", 0, 0);
     
     /*
     for (int i = 0; i < particles.get_size(); i++)
@@ -140,15 +154,13 @@ void MyGame::render(SDL_Renderer* renderer) {
     }
     */
 
-    int x = 0;
-    int y = 0;
-    SDL_Rect dst = { x, y, update_score.t_width, update_score.t_height };
-    SDL_RenderCopy(renderer, update_score.ftexture, NULL, &dst);
 
     SDL_RenderCopy(renderer, ball.texture, NULL, &ball_data);
 
     SDL_RenderFillRect(renderer, &player1_data);
     SDL_RenderFillRect(renderer, &player2_data);
+    game_data.oldScore1 = game_data.newScore1;
+    game_data.oldScore2 = game_data.newScore2;
 }
 
 void MyGame::destroy() {
