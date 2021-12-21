@@ -4,10 +4,11 @@
 
 Ball_texture_data ball;
 Particle_engine particles;
-Score update_score1;
-Score update_score2;
 
-std::vector<Score> Scores;
+Score* update_score1 = new Score;
+Score* update_score2 = new Score;
+
+std::vector<Score*> Scores;
 
 /*
 
@@ -24,11 +25,11 @@ void MyGame::init_text() {
     Scores.push_back(update_score1);
     Scores.push_back(update_score2);
 
-    update_score1.x = 100;
-    update_score1.y = 0;
+    update_score1->x = 0 + 10;
+    update_score1->y = 0;
 
-    update_score2.x = 500;
-    update_score2.y = 0;
+    update_score2->x = (800 - update_score2->t_width) - 10;
+    update_score2->y = 0;
 }
 
 void MyGame::init_audio() {
@@ -145,28 +146,24 @@ void MyGame::render(SDL_Renderer* renderer) {
     
     particles.update_particles(renderer);
 
-    if (update_score1.ftexture == NULL && update_score2.ftexture == NULL || game_data.newScore1 != game_data.oldScore1 || game_data.newScore2 != game_data.oldScore2)
+    if (update_score1->ftexture == NULL && update_score2->ftexture == NULL || game_data.newScore1 != game_data.oldScore1 || game_data.newScore2 != game_data.oldScore2)
     {
-        update_score1.updateText(renderer, std::to_string(game_data.newScore1));
-        update_score2.updateText(renderer, std::to_string(game_data.newScore2));
+        update_score1->updateText(renderer, std::to_string(game_data.newScore1));
+        update_score2->updateText(renderer, std::to_string(game_data.newScore2));
     }
     else
     {
-        /*for (int i = 0; i < Scores.size(); i++)
+        for (int i = 0; i < Scores.size(); i++)
         {
-            std::cout << "hello" << std::endl;
-            Scores[i].renderText(renderer);
-        }*/
-        update_score1.renderText(renderer);
-        update_score2.renderText(renderer);
+            Scores[i]->renderText(renderer);
+        }
     }
+
     
-    /*
     for (int i = 0; i < particles.get_size(); i++)
     {
         SDL_RenderFillRect(renderer, &particles.get_at(i));
     }
-    */
 
 
     SDL_RenderCopy(renderer, ball.texture, NULL, &ball_data);

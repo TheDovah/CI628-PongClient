@@ -74,7 +74,7 @@ public:
 
     void update_particles(SDL_Renderer* renderer) {
 
-        oldX = game_data.ballX;
+        newX = game_data.ballX;
 
         while (o.size() < max_amount)
         {
@@ -103,7 +103,7 @@ public:
             }
             o.at(i).y += number%10;
         }
-        newX = game_data.ballX;
+        oldX = game_data.ballX;
         lifetime -= 0.2f;
     }
 };
@@ -113,7 +113,7 @@ class Score {
 private:
     int fontsize = 24;
     const char* text;
-    SDL_Color text_color = { 255,255,255 };
+    SDL_Color text_color = { 215, 138, 75 };
     std::string fontpath = "assets/Oswald-Bold.ttf";
     TTF_Font* font;
     SDL_Surface* text_surface;
@@ -121,11 +121,12 @@ private:
 public:
     int x;
     int y;
+    int t_width = 100;
+    int t_height = 100;
+
     SDL_Texture* ftexture = NULL; // our font-texture
     
     SDL_Rect makeRect(int x, int y) {
-        int t_width = 200;
-        int t_height = 200;
 
         SDL_Rect dst = { x, y, t_width, t_height };
 
@@ -146,7 +147,6 @@ public:
         }
         else {
             // now create a surface from the font
-            std::cout << "Updating score.." << std::endl;
             text_surface = TTF_RenderText_Solid(font, text, text_color);
             renderText(renderer);
         }
