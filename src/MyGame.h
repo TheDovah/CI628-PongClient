@@ -130,7 +130,7 @@ public:
     int t_width = 100;
     int t_height = 100;
 
-    SDL_Texture* ftexture = NULL; // our font-texture
+    SDL_Texture* ftexture = nullptr; // our font-texture
     
     SDL_Rect makeRect(int x, int y) {
 
